@@ -10,6 +10,8 @@ namespace Async__Inn
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddControllers();
+
             string connString = builder.Configuration.GetConnectionString("DefaultConnection");
 
             builder.Services
@@ -18,6 +20,7 @@ namespace Async__Inn
 
             var app = builder.Build();
 
+            app.MapControllers();
             app.MapGet("/", () => "Hello World!");
 
             app.MapGet("/ammar", () => "Hello Ammar!");

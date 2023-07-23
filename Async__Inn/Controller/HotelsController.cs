@@ -9,7 +9,7 @@ using Async__Inn.Data;
 using Async__Inn.Models;
 
 namespace Async__Inn.Controller
-{
+{ 
     [Route("api/[controller]")]
     [ApiController]
     public class HotelsController : ControllerBase

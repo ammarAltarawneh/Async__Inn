@@ -1,4 +1,7 @@
 using Async__Inn.Data;
+using Async__Inn.Models;
+using Async__Inn.Models.Interfaces;
+using Async__Inn.Models.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -18,9 +21,16 @@ namespace Async__Inn
                 .AddDbContext<AsyncInnDbContext>
                 (options => options.UseSqlServer(connString));
 
+            builder.Services.AddTransient<IAmenity, AmenityServices>();
+            builder.Services.AddTransient<IHotel, HotelServices>();
+            builder.Services.AddTransient<IRoom, RoomServices>();
+
             var app = builder.Build();
 
             app.MapControllers();
+
+            
+
             app.MapGet("/", () => "Hello World!");
 
             app.MapGet("/ammar", () => "Hello Ammar!");

@@ -15,6 +15,10 @@ namespace Async__Inn
 
             builder.Services.AddControllers();
 
+            builder.Services.AddControllers().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
             string connString = builder.Configuration.GetConnectionString("DefaultConnection");
 
             builder.Services
@@ -24,11 +28,11 @@ namespace Async__Inn
             builder.Services.AddTransient<IAmenity, AmenityServices>();
             builder.Services.AddTransient<IHotel, HotelServices>();
             builder.Services.AddTransient<IRoom, RoomServices>();
-
+            builder.Services.AddTransient<IHotelRoom, HotelRoomRepository>();
             var app = builder.Build();
 
             app.MapControllers();
-
+            
             
 
             app.MapGet("/", () => "Hello World!");

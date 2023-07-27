@@ -3,6 +3,7 @@ using Async__Inn.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Async__Inn.Migrations
 {
     [DbContext(typeof(AsyncInnDbContext))]
-    partial class HotelDBcontextModelSnapshot : ModelSnapshot
+    [Migration("20230726093931_NPINRoomAmenities")]
+    partial class NPINRoomAmenities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -211,13 +214,13 @@ namespace Async__Inn.Migrations
             modelBuilder.Entity("Async__Inn.Models.HotelRoom", b =>
                 {
                     b.HasOne("Async__Inn.Models.Hotel", "Hotel")
-                        .WithMany("HotelRoom")
+                        .WithMany()
                         .HasForeignKey("HotelID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Async__Inn.Models.Room", "Room")
-                        .WithMany("HotelRoom")
+                        .WithMany()
                         .HasForeignKey("RoomID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -230,13 +233,13 @@ namespace Async__Inn.Migrations
             modelBuilder.Entity("Async__Inn.Models.RoomAmenities", b =>
                 {
                     b.HasOne("Async__Inn.Models.Amenity", "Amenity")
-                        .WithMany("RoomAmenities")
+                        .WithMany()
                         .HasForeignKey("AmenityID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Async__Inn.Models.Room", "Room")
-                        .WithMany("RoomAmenities")
+                        .WithMany()
                         .HasForeignKey("RoomID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -244,23 +247,6 @@ namespace Async__Inn.Migrations
                     b.Navigation("Amenity");
 
                     b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("Async__Inn.Models.Amenity", b =>
-                {
-                    b.Navigation("RoomAmenities");
-                });
-
-            modelBuilder.Entity("Async__Inn.Models.Hotel", b =>
-                {
-                    b.Navigation("HotelRoom");
-                });
-
-            modelBuilder.Entity("Async__Inn.Models.Room", b =>
-                {
-                    b.Navigation("HotelRoom");
-
-                    b.Navigation("RoomAmenities");
                 });
 #pragma warning restore 612, 618
         }

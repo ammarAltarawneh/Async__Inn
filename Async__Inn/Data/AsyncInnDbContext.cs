@@ -28,11 +28,19 @@ namespace Async__Inn.Data
                 new Room() { ID = 3, Name = "buisiness center" }
                 );
 
+            modelBuilder.Entity<HotelRoom>().HasKey(
+                hotelRoom => new { hotelRoom.HotelID, hotelRoom.RoomID, hotelRoom.RoomNumber, hotelRoom.Rate, hotelRoom.PetFreindly }
+                );
+            modelBuilder.Entity<RoomAmenities>().HasKey(
+                roomAmenities => new { roomAmenities.AmenitiesID, roomAmenities.RoomID }
+                );
+
         }
 
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Amenity> Amenities { get; set; }
-
+        public DbSet<HotelRoom> HotelRoom { get; set; }
+        public DbSet<RoomAmenities> RoomAmenities { get; set; }
     }
 }

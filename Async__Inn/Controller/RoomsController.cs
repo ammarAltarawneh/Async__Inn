@@ -9,7 +9,7 @@ using Async__Inn.Data;
 using Async__Inn.Models;
 using Async__Inn.Models.Interfaces;
 
-namespace Async__Inn.Controller
+namespace Async__Inn.Controller 
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -71,6 +71,34 @@ namespace Async__Inn.Controller
             await _room.Delete(id);
 
             return NoContent();
-        }       
+        }
+
+         [HttpPost("{roomId}/Amenity/{amenityId}")]
+        public async Task<IActionResult> AddAmenityToRoom(int roomId, int amenityId)
+        {
+            try
+            {
+                await _room.AddAmenityToRoom(roomId, amenityId);
+                return Ok("Amenity added to the room successfully !");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{roomId}/Amenity/{amenityId}")]
+        public async Task<IActionResult> RemoveAmenityFromRoom(int roomId, int amenityId)
+        {
+            try
+            {
+                await _room.RemoveAmenityFromRoom(roomId, amenityId);
+                return Ok("Amenity removed succsessfully !");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

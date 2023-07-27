@@ -30,7 +30,10 @@ namespace Async__Inn.Models.Services
 
         public async Task<List<Room>> GetRooms()
         {
-            var rooms= await _context.Rooms.ToListAsync();
+            var rooms= await _context.Rooms
+                .Include(x => x.HotelRoom)
+                .Include(x => x.RoomAmenities)
+                .ToListAsync();
             return rooms;
         }
 
@@ -47,6 +50,25 @@ namespace Async__Inn.Models.Services
             return room;
         }
 
-        
+        public async Task AddAmenityToRoom(int roomId, int amenityId)
+        {
+            RoomAmenities roomAmenities = new RoomAmenities()
+            {
+                RoomID = roomId,
+                AmenitiesID = amenityId
+            };
+
+            _context.Entry(roomAmenities).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveAmenityFromRoom(int roomId, int amenityId)
+        {
+            var result = await _context.RoomAmenities.FirstOrDefaultAsync(r => r.AmenitiesID == amenityId && r.RoomID == roomId);
+
+            _context.Entry(result).State = EntityState.Deleted;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

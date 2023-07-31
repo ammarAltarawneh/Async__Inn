@@ -13,10 +13,11 @@ namespace Async__Inn.Models.Services
             _context = context;
         }
 
-        public async Task<Room> Create(Room room)
+        public async Task<Room> Create(string name, int layout)
         {
-            _context.Rooms.Add(room);
-
+            //_context.Rooms.Add(room);
+            Room room = new Room { Layout= layout ,Name = name};
+            _context.Entry(room).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return room;
         }
@@ -43,8 +44,10 @@ namespace Async__Inn.Models.Services
             return room;
         }
         
-        public async Task<Room> UpdateRoom(int ID, Room room)
+        public async Task<Room> UpdateRoom(int ID, string name, int layout)
         {
+            //_context.Entry(room).State = EntityState.Modified;
+            Room room = new Room {ID=ID, Layout = layout, Name = name };
             _context.Entry(room).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return room;

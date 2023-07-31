@@ -6,7 +6,7 @@ namespace Async__Inn.Models.Services
 {
     public class AmenityServices : IAmenity
     {
-        private readonly AsyncInnDbContext _context;
+        private readonly AsyncInnDbContext _context; 
 
         public AmenityServices(AsyncInnDbContext context)
         {
@@ -14,10 +14,11 @@ namespace Async__Inn.Models.Services
         }
 
 
-        public async Task<Amenity> Create(Amenity amenity)
+        public async Task<Amenity> Create(string name)
         {
-            _context.Amenities.Add(amenity);
-
+            //_context.Amenities.Add(amenity);
+            Amenity amenity = new Amenity { Name=name};
+            _context.Entry(amenity).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return amenity;
         }
@@ -31,7 +32,9 @@ namespace Async__Inn.Models.Services
 
         public async Task<List<Amenity>> GetAmenities()
         {
-            var amenities = await _context.Amenities.ToListAsync();
+            var amenities = await _context.Amenities
+                .Include(x => x.RoomAmenities)
+                .ToListAsync();
             return amenities;
         }
 
@@ -41,8 +44,10 @@ namespace Async__Inn.Models.Services
             return amenity;
         }
 
-        public async Task<Amenity> UpdateAmenity(int ID, Amenity amenity)
+        public async Task<Amenity> UpdateAmenity(int ID, string name)
         {
+            //_context.Entry(amenity).State = EntityState.Modified;
+            Amenity amenity = new Amenity { Name=name};
             _context.Entry(amenity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return amenity;

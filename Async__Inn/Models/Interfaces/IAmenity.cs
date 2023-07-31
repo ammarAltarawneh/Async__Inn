@@ -3,8 +3,8 @@
     public interface IAmenity
     {
         // Create
-        Task<Amenity> Create(Amenity amenity);
-
+        Task<Amenity> Create(string name);
+         
         // Get all
         Task<List<Amenity>> GetAmenities();
 
@@ -12,7 +12,7 @@
         Task<Amenity> GetAmenity(int AmenityID);
 
         // Update
-        Task<Amenity> UpdateAmenity(int ID, Amenity amenity);
+        Task<Amenity> UpdateAmenity(int ID, string name);
 
         // Delete
         Task Delete(int ID);

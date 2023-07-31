@@ -32,8 +32,7 @@ namespace Async__Inn
             var app = builder.Build();
 
             app.MapControllers();
-            
-            
+                    
 
             app.MapGet("/", () => "Hello World!");
 

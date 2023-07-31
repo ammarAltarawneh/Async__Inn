@@ -3,7 +3,7 @@
     public interface IRoom
     {
         // Create
-        Task<Room> Create(Room room);
+        Task<Room> Create(string name, int layout);
 
         // Get all
         Task<List<Room>> GetRooms();
@@ -12,7 +12,7 @@
         Task<Room> GetRoom(int RoomID);
 
         // Update
-        Task<Room> UpdateRoom(int ID, Room room);
+        Task<Room> UpdateRoom(int ID, string name, int layout);
 
         // Delete
         Task Delete(int ID);

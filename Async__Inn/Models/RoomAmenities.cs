@@ -8,9 +8,6 @@
         // Navigation Propabilities
         public Room Room { get; set; }
         public Amenity Amenity { get; set; }
-
-        public RoomAmenities() 
-        { 
-        }
+                
     }
 }

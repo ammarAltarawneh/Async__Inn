@@ -26,3 +26,20 @@ I Update the Controller to use the appropriate method from the interface rather 
 ![](./assets/post.png)
 ![](./assets/put.png)
 ![](./assets/Delete.png)
+
+## Navigation properties
+we add a NP to the previos entity so it has an access to each other values.
+
+And here is the CRUD operations after adding NP:
+
+Get:
+![](./assets/GetRoom.png)
+
+Post:
+![](./assets/PostRoom.png)
+
+Put:
+![](./assets/PutRoom.png)
+
+Delete:
+![](./assets/DeleteRoom.png)

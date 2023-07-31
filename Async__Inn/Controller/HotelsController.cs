@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Async__Inn.Data;
-using Async__Inn.Models;
+using Async__Inn.Models; 
 using Async__Inn.Models.Interfaces;
 
 namespace Async__Inn.Controller

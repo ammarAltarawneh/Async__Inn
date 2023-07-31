@@ -3,7 +3,7 @@
     public interface IHotel
     {
         // Create
-        Task<Hotel> Create(Hotel hotel);
+        Task<Hotel> Create(string name, string streatAdress, string city, string state, string country, string phone);
 
         // Get all
         Task<List<Hotel>> GetHotels();
@@ -12,9 +12,10 @@
         Task<Hotel> GetHotel(int HotelID);
 
         // Update
-        Task<Hotel> UpdateHotel(int ID, Hotel hotel);
+        Task<Hotel> UpdateHotel(int ID, string name, string streatAdress, string city, string state, string country, string phone);
 
         // Delete
         Task Delete(int ID);
+        
     }
 }

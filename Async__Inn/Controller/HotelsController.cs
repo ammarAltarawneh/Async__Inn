@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Async__Inn.Data;
 using Async__Inn.Models; 
-using Async__Inn.Models.Interfaces;
+using Async__Inn.Models.Interfaces; 
 
 namespace Async__Inn.Controller
 { 
@@ -34,37 +34,35 @@ namespace Async__Inn.Controller
         public async Task<ActionResult<Hotel>> GetHotel(int id)
         {
             var hotel = await _hotel.GetHotel(id);
-
-            
+            if (hotel == null)
+            {
+                return NotFound();
+            }
 
             return hotel;
         }
 
         // PUT: api/Hotels/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutHotel(int id, Hotel hotel)
-        {
-            if (id != hotel.ID)
-            {
-                return BadRequest();
-            }
-
-            var updateHotel = await _hotel.UpdateHotel(id, hotel);
-
-            return Ok(updateHotel);
+        //[HttpPut("{id}/{name}/Hotels/{streatAdress}/{city}/{state}/{country}/{phone}")]
+        //public async Task<IActionResult> PutHotel(int ID, string streatAdress, string city, string state, string country, string phone)
+        //{
 
 
-        }
+        //    var updateHotel = await _hotel.UpdateHotel(ID, streatAdress, city, state, country, phone);
+        //    return Ok(updateHotel);
+
+
+        //}
 
         // POST: api/Hotels
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Hotel>> PostHotel(Hotel hotel)
+        [HttpPost("{name}/Hotels/{streatAdress}/{city}/{state}/{country}/{phone}")]
+        public async Task<ActionResult<Hotel>> PostHotel(string name, string streatAdress, string city, string state, string country, string phone)
         {
-            await _hotel.Create(hotel);
+            var createdHotel = await _hotel.Create(name, streatAdress,city,state,country,phone);
 
-            return CreatedAtAction("GetHotel", new { id = hotel.ID }, hotel);
+            return CreatedAtAction("GetHotel", new { id = createdHotel.ID }, createdHotel);
         }
 
         // DELETE: api/Hotels/5

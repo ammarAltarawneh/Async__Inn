@@ -14,10 +14,11 @@ namespace Async__Inn.Models.Services
         }
 
 
-        public async Task<Hotel> Create(Hotel hotel)
+        public async Task<Hotel> Create(string name, string streatAdress, string city, string state, string country, string phone)
         {
-            _context.Hotels.Add(hotel);
-
+            //_context.Hotels.Add(hotel);
+            Hotel hotel = new Hotel {Name = name,StreetAdress = streatAdress, City=city, State = state,Country=country,Phone=phone };
+            _context.Entry(hotel).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return hotel;
         }
@@ -31,7 +32,8 @@ namespace Async__Inn.Models.Services
 
         public async Task<List<Hotel>> GetHotels()
         {
-            var hotels = await _context.Hotels.ToListAsync();
+            var hotels = await _context.Hotels
+                .Include(h=>h.HotelRoom).ToListAsync();
             return hotels;
         }
 
@@ -41,11 +43,15 @@ namespace Async__Inn.Models.Services
             return hotel;
         }
 
-        public async Task<Hotel> UpdateHotel(int ID, Hotel hotel)
+        public async Task<Hotel> UpdateHotel(int ID, string name, string streatAdress, string city, string state, string country, string phone)
         {
+            //_context.Entry(hotel).State = EntityState.Modified;
+            Hotel hotel = new Hotel { Name = name, StreetAdress = streatAdress, City = city, State = state, Country = country, Phone = phone };
             _context.Entry(hotel).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return hotel;
         }
+
+        
     }
 }

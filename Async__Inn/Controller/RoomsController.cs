@@ -26,54 +26,53 @@ namespace Async__Inn.Controller
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Room>>> GetRooms()
         {
-
             return await _room.GetRooms();
         }
 
-        // GET: api/Rooms/5
+        // GET: api/Room/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Room>> GetRoom(int id)
         {
-            var room = await _room.GetRoom(id);                  
+            var room = await _room.GetRoom(id);
+
+            if (room == null)
+            {
+                return NotFound();
+            }
 
             return room;
         }
 
-        // PUT: api/Rooms/5
+
+
+        // POST: api/Room
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutRoom(int id, Room room)
+        [HttpPost("{name}/Rooms/{layout}")]
+        public async Task<ActionResult<Room>> PostRoom(string name, int layout)
         {
-            if (id != room.ID)
-            {
-                return BadRequest();
-            }
+            var createdRoom = await _room.Create(name, layout);
 
-            var updateRoom = await _room.UpdateRoom(id, room);
-
-            return Ok(updateRoom);
+            return CreatedAtAction("GetRoom", new { id = createdRoom.ID }, createdRoom);
         }
 
-        // POST: api/Rooms
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Room>> PostRoom(Room room)
-        {
-            await _room.Create(room);
-
-            return CreatedAtAction("GetRoom", new { id = room.ID }, room);
-        }
-
-        // DELETE: api/Rooms/5
+        // DELETE: api/Room/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRoom(int id)
         {
+            var room = await _room.GetRoom(id);
+            if (room == null)
+            {
+                return NotFound();
+            }
+
             await _room.Delete(id);
 
             return NoContent();
         }
 
-         [HttpPost("{roomId}/Amenity/{amenityId}")]
+
+
+        [HttpPost("{roomId}/Amenity/{amenityId}")]
         public async Task<IActionResult> AddAmenityToRoom(int roomId, int amenityId)
         {
             try
@@ -100,5 +99,21 @@ namespace Async__Inn.Controller
                 return BadRequest(ex.Message);
             }
         }
+
+        // PUT: api/Rooms/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}/{name}/Rooms/{layout}")]
+        public async Task<IActionResult> PutHotel(int ID, string name, int layout)
+        {
+           
+
+            var updateRoom = await _room.UpdateRoom(ID,name,layout);
+
+            return Ok(updateRoom);
+
+
+        }
+
+
     }
 }

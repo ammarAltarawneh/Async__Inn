@@ -6,8 +6,6 @@
         public string Name { get; set; }
 
         public List<RoomAmenities> RoomAmenities { get; set; }
-        public Amenity()
-        {
-        }
+        
     }
 }

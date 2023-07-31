@@ -9,8 +9,6 @@
         public List<HotelRoom> HotelRoom { get; set; }
         public List<RoomAmenities> RoomAmenities { get; set; }
 
-        public Room() 
-        {
-        }
+       
     }
 }

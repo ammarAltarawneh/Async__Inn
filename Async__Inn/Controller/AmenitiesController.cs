@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore; 
 using Async__Inn.Data;
 using Async__Inn.Models;
 using Async__Inn.Models.Interfaces;
@@ -44,27 +44,22 @@ namespace Async__Inn.Controller
 
         // PUT: api/Amenities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAmenity(int id, Amenity amenity)
+        [HttpPut("{id}/Amenities/{name}")]
+        public async Task<IActionResult> PutAmenity(int id, string name)
         {
-            if (id != amenity.ID)
-            {
-                return BadRequest();
-            }
-
-            var updateAmenity = await _amenity.UpdateAmenity(id, amenity);
+            var updateAmenity = await _amenity.UpdateAmenity(id, name);
 
             return Ok(updateAmenity);
         }
 
         // POST: api/Amenities
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Amenity>> PostAmenity(Amenity amenity)
+        [HttpPost("{name}/Amenities")]
+        public async Task<ActionResult<Amenity>> PostAmenity(string name)
         {
-            await _amenity.Create(amenity);
+            var createdAmenity = await _amenity.Create(name);
 
-            return CreatedAtAction("GetAmenity", new { id = amenity.ID }, amenity);
+            return CreatedAtAction("GetAmenity", new { id = createdAmenity.ID }, createdAmenity);
         }
 
         // DELETE: api/Amenities/5

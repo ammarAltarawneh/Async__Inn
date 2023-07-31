@@ -11,8 +11,6 @@
         // Navigation Propabilities
         public Hotel Hotel { get; set; }
         public Room Room { get; set; }
-        public HotelRoom()
-        {
-        }
+        
     }
 }

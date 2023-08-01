@@ -1,4 +1,6 @@
-﻿namespace Async__Inn.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Async__Inn.Models
 {
     public class HotelRoom
     {
@@ -9,8 +11,11 @@
         public bool PetFreindly { get; set; }
 
         // Navigation Propabilities
-        public Hotel Hotel { get; set; }
-        public Room Room { get; set; }
-        
+        [ForeignKey("RoomID")]
+        public Room? Room { get; set; }
+
+        [ForeignKey("HotelID")]
+        public Hotel? Hotel { get; set; }
+
     }
 }

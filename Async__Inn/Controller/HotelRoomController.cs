@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Async__Inn.Data;
 using Async__Inn.Models;
 using Async__Inn.Models.Interfaces;
-
+ 
 namespace Async__Inn.Controller
 {
-    [Route("api/[controller]")]
+    [Route("api/Hotels")]
     [ApiController]
     public class HotelRoomController : ControllerBase
     {
@@ -27,7 +27,7 @@ namespace Async__Inn.Controller
 
         // GET: api/HotelRooms
         [HttpGet]
-        [Route("/api/Hotels/{hotelId}/Rooms")]
+        [Route("{hotelId}/Rooms")]
         public async Task<ActionResult<IEnumerable<HotelRoom>>> GetHotelRooms([FromRoute] int hotelId)
         {
             if (_hotelRoomService == null)
@@ -41,7 +41,7 @@ namespace Async__Inn.Controller
         }
 
         // GET: api/HotelRooms/5
-        [HttpGet("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
+        [HttpGet("{hotelId}/Rooms/{roomNumber}")]
         public async Task<ActionResult<HotelRoom>> GetHotelRoom(int hotelId, int roomNumber)
         {
             var hotelRoom = await _hotelRoomService.GetHotelRoomsDetails(hotelId, roomNumber);
@@ -57,8 +57,8 @@ namespace Async__Inn.Controller
         // PUT: api/HotelRooms/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut]
-        [Route("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
-        public async Task<IActionResult> PutHotelRoom([FromRoute] int hotelId, [FromRoute] int roomNumber, [FromBody] HotelRoom hotelRoom)
+        [Route("{hotelId}/Rooms/{roomNumber}")]
+        public async Task<IActionResult> PutHotelRoom( int hotelId, int roomNumber, HotelRoom hotelRoom)
         {
 
             var updateHotelRoom = await _hotelRoomService.UpdateHotelRooms(hotelId, roomNumber, hotelRoom);
@@ -71,7 +71,7 @@ namespace Async__Inn.Controller
         // POST: api/HotelRooms
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Route("/api/Hotels/{hotelId}/Rooms")]
+        [Route("{hotelId}/Rooms")]
         public async Task<ActionResult<HotelRoom>> PostHotelRoom(HotelRoom hotelRoom, int hotelId)
         {
             var addedHotelRoom = await _hotelRoomService.Create(hotelRoom, hotelId);
@@ -80,7 +80,7 @@ namespace Async__Inn.Controller
 
         // DELETE: api/HotelRooms/5
         [HttpDelete]
-        [Route("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
+        [Route("{hotelId}/Rooms/{roomNumber}")]
         public async Task<IActionResult> DeleteHotelRoom(int hotelId, int roomNumber)
         {
             if (_hotelRoomService == null)
@@ -97,7 +97,7 @@ namespace Async__Inn.Controller
         /// <param name="name"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("/api/Hotels/byName/{name}")]
+        [Route("byName/{name}")]
         public async Task<ActionResult<IEnumerable<HotelRoom>>> getHotelRoomsByName([FromRoute] string name)
         {
             if (_hotelRoomService == null)

@@ -11,8 +11,8 @@
         // Get Amenity by ID
         Task<Amenity> GetAmenity(int AmenityID);
 
-        // Update
-        Task<Amenity> UpdateAmenity(int ID, string name);
+        // Update 
+        Task<Amenity> UpdateAmenity(int ID, Amenity amenity);
 
         // Delete
         Task Delete(int ID);

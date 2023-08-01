@@ -9,10 +9,10 @@
         Task<List<Room>> GetRooms();
 
         // Get Amenity by ID
-        Task<Room> GetRoom(int RoomID);
+        Task<Room> GetRoom(int RoomID); 
 
         // Update
-        Task<Room> UpdateRoom(int ID, string name, int layout);
+        Task<Room> UpdateRoom(int ID,Room room);
 
         // Delete
         Task Delete(int ID);

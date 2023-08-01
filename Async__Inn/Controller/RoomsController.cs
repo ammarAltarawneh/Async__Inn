@@ -9,7 +9,7 @@ using Async__Inn.Data;
 using Async__Inn.Models;
 using Async__Inn.Models.Interfaces;
 
-namespace Async__Inn.Controller 
+namespace Async__Inn.Controller  
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -102,12 +102,11 @@ namespace Async__Inn.Controller
 
         // PUT: api/Rooms/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}/{name}/Rooms/{layout}")]
-        public async Task<IActionResult> PutHotel(int ID, string name, int layout)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutHotel(int ID, Room room)
         {
            
-
-            var updateRoom = await _room.UpdateRoom(ID,name,layout);
+            var updateRoom = await _room.UpdateRoom(ID,room);
 
             return Ok(updateRoom);
 

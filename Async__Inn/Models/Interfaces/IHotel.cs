@@ -12,7 +12,7 @@
         Task<Hotel> GetHotel(int HotelID);
 
         // Update
-        Task<Hotel> UpdateHotel(int ID, string name, string streatAdress, string city, string state, string country, string phone);
+        Task<Hotel> UpdateHotel(int ID, Hotel hotel);
 
         // Delete
         Task Delete(int ID);

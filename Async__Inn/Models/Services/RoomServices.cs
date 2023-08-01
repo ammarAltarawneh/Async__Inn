@@ -8,11 +8,11 @@ namespace Async__Inn.Models.Services
     {
         private readonly AsyncInnDbContext _context;
 
-        public RoomServices(AsyncInnDbContext context)
+        public RoomServices(AsyncInnDbContext context) 
         {
             _context = context;
         }
-
+         
         public async Task<Room> Create(string name, int layout)
         {
             //_context.Rooms.Add(room);
@@ -32,8 +32,8 @@ namespace Async__Inn.Models.Services
         public async Task<List<Room>> GetRooms()
         {
             var rooms= await _context.Rooms
-                .Include(x => x.HotelRoom)
-                .Include(x => x.RoomAmenities)
+                .Include(x => x.HotelRoom).ThenInclude(ra => ra.Hotel)
+                .Include(x => x.RoomAmenities).ThenInclude(ra => ra.Amenity)
                 .ToListAsync();
             return rooms;
         }
@@ -44,10 +44,10 @@ namespace Async__Inn.Models.Services
             return room;
         }
         
-        public async Task<Room> UpdateRoom(int ID, string name, int layout)
+        public async Task<Room> UpdateRoom(int ID,Room room)
         {
             //_context.Entry(room).State = EntityState.Modified;
-            Room room = new Room {ID=ID, Layout = layout, Name = name };
+            
             _context.Entry(room).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return room;

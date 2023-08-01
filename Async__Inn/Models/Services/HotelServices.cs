@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Async__Inn.Models.Services
 {
-    public class HotelServices : IHotel
+    public class HotelServices : IHotel 
     {
         private readonly AsyncInnDbContext _context;
 
         public HotelServices(AsyncInnDbContext context)
-        {
+        { 
             _context = context;
         }
 
@@ -29,11 +29,13 @@ namespace Async__Inn.Models.Services
             _context.Entry(hotel).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }
-
+        
         public async Task<List<Hotel>> GetHotels()
         {
             var hotels = await _context.Hotels
-                .Include(h=>h.HotelRoom).ToListAsync();
+                .Include(h=>h.HotelRoom)
+                .ThenInclude(ra => ra.Room)
+                .ToListAsync();
             return hotels;
         }
 
@@ -43,10 +45,9 @@ namespace Async__Inn.Models.Services
             return hotel;
         }
 
-        public async Task<Hotel> UpdateHotel(int ID, string name, string streatAdress, string city, string state, string country, string phone)
+        public async Task<Hotel> UpdateHotel(int ID, Hotel hotel)
         {
             //_context.Entry(hotel).State = EntityState.Modified;
-            Hotel hotel = new Hotel { Name = name, StreetAdress = streatAdress, City = city, State = state, Country = country, Phone = phone };
             _context.Entry(hotel).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return hotel;

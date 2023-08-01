@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore; 
 using Async__Inn.Data;
-using Async__Inn.Models;
-using Async__Inn.Models.Interfaces;
+using Async__Inn.Models; 
+using Async__Inn.Models.Interfaces; 
 
 namespace Async__Inn.Controller
 {
@@ -44,10 +44,10 @@ namespace Async__Inn.Controller
 
         // PUT: api/Amenities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}/Amenities/{name}")]
-        public async Task<IActionResult> PutAmenity(int id, string name)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAmenity(int id, Amenity amenity)
         {
-            var updateAmenity = await _amenity.UpdateAmenity(id, name);
+            var updateAmenity = await _amenity.UpdateAmenity(id, amenity);
 
             return Ok(updateAmenity);
         }

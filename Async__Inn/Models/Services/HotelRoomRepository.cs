@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore;
 namespace Async__Inn.Models.Services
 {
     public class HotelRoomRepository : IHotelRoom
-    {
+    { 
         private readonly AsyncInnDbContext _context;
 
-        public HotelRoomRepository(AsyncInnDbContext context)
+        public HotelRoomRepository(AsyncInnDbContext context) 
         {
             _context = context;
         }
-
+         
 
 
         public async Task<HotelRoom> Create(HotelRoom hotelRoom, int hotelId)
@@ -108,35 +108,23 @@ namespace Async__Inn.Models.Services
 
         public async Task<HotelRoom> GetHotelRoomsDetails(int hotelId, int roomNumber)
         {
-            var hotelDetails = await _context.HotelRoom
-                .Include(hotel => hotel.Hotel)
-                .Include(room => room.Room)
+            var hotelRoomDetails = await _context.HotelRoom
+                .Include(hr => hr.Hotel)
+                .Include(hr => hr.Room)
                 .ThenInclude(roomAmenities => roomAmenities.RoomAmenities)
                 .ThenInclude(amenity => amenity.Amenity)
                 .Where(hotel => hotel.HotelID == hotelId && hotel.RoomNumber == roomNumber)
                 .FirstOrDefaultAsync();
 
 
-            return hotelDetails;
+            return hotelRoomDetails;
         }
 
         public async Task<HotelRoom> UpdateHotelRooms(int hotelId, int roomNumber, HotelRoom hotelRoom)
         {
-            // update depend on the id that i will sent 
-
-            var hotel = await _context.HotelRoom.FindAsync(hotelId, roomNumber);
-
-            if (hotel != null)
-            {
-                hotel.HotelID = hotelRoom.HotelID;
-                hotel.RoomID = hotelRoom.RoomID;
-                hotel.RoomNumber = hotelRoom.RoomNumber;
-                hotel.Rate = hotelRoom.Rate;
-                hotel.PetFreindly = hotelRoom.PetFreindly;
-
-                await _context.SaveChangesAsync();
-            }
-
+            
+             _context.Entry(hotelRoom).State= EntityState.Modified;
+            await _context.SaveChangesAsync();
             return hotelRoom;
         }
     }

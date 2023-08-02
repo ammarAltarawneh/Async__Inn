@@ -8,106 +8,93 @@ using Microsoft.EntityFrameworkCore;
 using Async__Inn.Data;
 using Async__Inn.Models;
 using Async__Inn.Models.Interfaces;
- 
+using Async__Inn.Models.DTO;
+
 namespace Async__Inn.Controller
-{
+{ 
     [Route("api/Hotels")]
     [ApiController]
-    public class HotelRoomController : ControllerBase
+    public class HotelRoomsController : ControllerBase
     {
-        private readonly IHotelRoom _hotelRoomService;
+        private readonly IHotelRoom _HotelRoom;
 
-        public HotelRoomController(IHotelRoom hotelRoomService)
+        public HotelRoomsController(IHotelRoom HotelRoom)
+
         {
-            _hotelRoomService = hotelRoomService;
+            _HotelRoom = HotelRoom;
         }
-
-
-
 
         // GET: api/HotelRooms
+        [Route("/api/Hotels/{hotelId}/Rooms")]
         [HttpGet]
-        [Route("{hotelId}/Rooms")]
-        public async Task<ActionResult<IEnumerable<HotelRoom>>> GetHotelRooms([FromRoute] int hotelId)
+        public async Task<ActionResult<IEnumerable<HotelRoomDTO>>> GetHotelRooms(int hotelId)
         {
-            if (_hotelRoomService == null)
+            if (await _HotelRoom.GetHotelRooms(hotelId) == null)
             {
                 return NotFound();
             }
-
-            var hotelRooms = await _hotelRoomService.GetHotelRooms(hotelId);
-
-            return Ok(hotelRooms);
+            return await _HotelRoom.GetHotelRooms(hotelId);
         }
 
-        // GET: api/HotelRooms/5
-        [HttpGet("{hotelId}/Rooms/{roomNumber}")]
-        public async Task<ActionResult<HotelRoom>> GetHotelRoom(int hotelId, int roomNumber)
+        [Route("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
+        [HttpGet]
+        public async Task<ActionResult<HotelRoomDTO>> GetHotelRoom(int hotelId, int roomNumber)
         {
-            var hotelRoom = await _hotelRoomService.GetHotelRoomsDetails(hotelId, roomNumber);
-
-            if (hotelRoom == null)
+            if (await _HotelRoom.GetHotelRoom(hotelId, roomNumber) == null)
             {
                 return NotFound();
             }
+            var hotelRoom = await _HotelRoom.GetHotelRoom(hotelId, roomNumber);
 
-            return Ok(hotelRoom);
+
+            return hotelRoom;
+
         }
 
         // PUT: api/HotelRooms/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Route("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
         [HttpPut]
-        [Route("{hotelId}/Rooms/{roomNumber}")]
-        public async Task<IActionResult> PutHotelRoom( int hotelId, int roomNumber, HotelRoom hotelRoom)
+        public async Task<IActionResult> PutHotelRoom(int hotelId, int roomNumber, HotelRoomDTO hotelRoom)
         {
 
-            var updateHotelRoom = await _hotelRoomService.UpdateHotelRooms(hotelId, roomNumber, hotelRoom);
+            var hotelRoomupdated = await _HotelRoom.UpdateHotelRoom(hotelId, roomNumber, hotelRoom);
+            if (hotelRoomupdated == null)
+            {
+                return NoContent();
+            }
+
+            return CreatedAtAction("GetHotelRoom", new { HotelId = hotelId, RoomNumber = roomNumber }, hotelRoomupdated);
 
 
-
-            return Ok(updateHotelRoom);
         }
 
         // POST: api/HotelRooms
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Route("/api/Hotels/{hotelId}/Rooms")]
         [HttpPost]
-        [Route("{hotelId}/Rooms")]
-        public async Task<ActionResult<HotelRoom>> PostHotelRoom(HotelRoom hotelRoom, int hotelId)
+        public async Task<ActionResult<HotelRoomDTO>> PostHotelRoom(HotelRoomDTO hotelRoom, int hotelId)
         {
-            var addedHotelRoom = await _hotelRoomService.Create(hotelRoom, hotelId);
-            return Ok(addedHotelRoom);
+            hotelRoom.HotelID = hotelId;
+            var hotelRoomAdded = await _HotelRoom.Create(hotelRoom, hotelId);
+            if (hotelRoomAdded == null)
+            {
+                return Problem("Entity set 'AsyncInnDbContext.HotelRooms'  is null.");
+            }
+
+
+
+            return CreatedAtAction("GetHotelRoom", new { hotelRoomAdded.HotelID, hotelRoomAdded.RoomNumber }, hotelRoomAdded);
         }
 
         // DELETE: api/HotelRooms/5
+        [Route("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
         [HttpDelete]
-        [Route("{hotelId}/Rooms/{roomNumber}")]
         public async Task<IActionResult> DeleteHotelRoom(int hotelId, int roomNumber)
         {
-            if (_hotelRoomService == null)
-            {
-                return NotFound();
-            }
-            await _hotelRoomService.DeleteHotelRooms(hotelId, roomNumber);
+            await _HotelRoom.Delete(hotelId, roomNumber);
 
             return NoContent();
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("byName/{name}")]
-        public async Task<ActionResult<IEnumerable<HotelRoom>>> getHotelRoomsByName([FromRoute] string name)
-        {
-            if (_hotelRoomService == null)
-            {
-                return NotFound();
-            }
-
-            var hotelRooms = await _hotelRoomService.GetHotelRoomsByName(name);
-
-            return Ok(hotelRooms);
         }
 
     }

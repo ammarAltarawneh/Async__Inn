@@ -43,3 +43,16 @@ Put:
 
 Delete:
 ![](./assets/DeleteRoom.png)
+
+## DTOs
+We add DTO classes and apply the changes to match required DTO features.
+
+Here are some requests after applying DTOs:
+
+![](./assets/1.png)
+
+![](./assets/2.png)
+
+![](./assets/3.png)
+
+![](./assets/4.png)

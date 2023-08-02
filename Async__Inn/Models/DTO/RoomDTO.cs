@@ -2,14 +2,10 @@
 {
     public class RoomDTO
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
-        public string NickName { get; set; }
-        public double Price { get; set; }
-        public bool PetFriendly { get; set; }
-        public int HotelID { get; set; }
+        public int Layout { get; set; }
 
-        
-        public List<AmenityDTO> Amenities { get; set; }
+        public List<AmenityDTO>? Amenities { get; set; }
     }
 }

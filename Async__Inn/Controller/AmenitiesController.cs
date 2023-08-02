@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore; 
 using Async__Inn.Data;
 using Async__Inn.Models; 
-using Async__Inn.Models.Interfaces; 
+using Async__Inn.Models.Interfaces;
+using Async__Inn.Models.DTO;
 
 namespace Async__Inn.Controller
 {
@@ -24,20 +25,25 @@ namespace Async__Inn.Controller
 
         // GET: api/Amenities
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Amenity>>> GetAmenities()
+        public async Task<ActionResult<IEnumerable<AmenityDTO>>> GetAmenities()
         {
-          
-            return await _amenity.GetAmenities ();
+            var amenties = await _amenity.GetAmenities();
+            if (amenties == null)
+            {
+                return NotFound();
+            }
+            return amenties;
         }
 
         // GET: api/Amenities/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Amenity>> GetAmenity(int id)
+        public async Task<ActionResult<AmenityDTO>> GetAmenity(int id)
         {
-          
             var amenity = await _amenity.GetAmenity(id);
-
-            
+            if (amenity == null)
+            {
+                return NotFound();
+            }
 
             return amenity;
         }
@@ -45,21 +51,26 @@ namespace Async__Inn.Controller
         // PUT: api/Amenities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAmenity(int id, Amenity amenity)
+        public async Task<IActionResult> PutAmenity(int id, AmenityDTO amenity)
         {
-            var updateAmenity = await _amenity.UpdateAmenity(id, amenity);
+            if (id != amenity.ID)
+            {
+                return BadRequest();
+            }
+            var updatedAmenity = await _amenity.UpdateAmenity(id, amenity);
+            return Ok(updatedAmenity);
 
-            return Ok(updateAmenity);
         }
 
         // POST: api/Amenities
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("{name}/Amenities")]
-        public async Task<ActionResult<Amenity>> PostAmenity(string name)
+        [HttpPost]
+        public async Task<ActionResult<AmenityDTO>> PostAmenity(AmenityDTO amenity)
         {
-            var createdAmenity = await _amenity.Create(name);
+            await _amenity.Create(amenity);
 
-            return CreatedAtAction("GetAmenity", new { id = createdAmenity.ID }, createdAmenity);
+            // Rurtn a 201 Header to Browser or the postmane
+            return CreatedAtAction("GetAmenity", new { id = amenity.ID }, amenity);
         }
 
         // DELETE: api/Amenities/5
@@ -69,6 +80,6 @@ namespace Async__Inn.Controller
             await _amenity.Delete(id);
 
             return NoContent();
-        }        
+        }
     }
 }

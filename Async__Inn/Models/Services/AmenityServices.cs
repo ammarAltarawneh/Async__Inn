@@ -1,4 +1,5 @@
 ﻿using Async__Inn.Data;
+using Async__Inn.Models.DTO;
 using Async__Inn.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,46 +14,60 @@ namespace Async__Inn.Models.Services
             _context = context;
         }
 
-        
-        public async Task<Amenity> Create(string name)
-        { 
-            //_context.Amenities.Add(amenity);
-            Amenity amenity = new Amenity { Name=name};
-            _context.Entry(amenity).State = EntityState.Added;
+
+        public async Task<AmenityDTO> Create(AmenityDTO amenityDTO)
+        {
+            var amenity = new Amenity()
+            {
+                Name = amenityDTO.Name,
+            };
+            await _context.Amenities.AddAsync(amenity);
+
             await _context.SaveChangesAsync();
-            return amenity;
+
+            return amenityDTO;
         }
 
-        public async Task Delete(int ID)
+        public async Task Delete(int id)
         {
-            Amenity amenity = await GetAmenity(ID);
-            _context.Entry(amenity).State = EntityState.Deleted;
-            await _context.SaveChangesAsync();
+            Amenity amenity = await _context.Amenities.FindAsync(id);
+            if (amenity != null)
+            {
+                _context.Amenities.Remove(amenity);
+                _context.SaveChanges();
+            }
         }
 
-        public async Task<List<Amenity>> GetAmenities()
+        public async Task<List<AmenityDTO>> GetAmenities()
         {
-            var amenities = await _context.Amenities
-                .Include(x => x.RoomAmenities)
-                .ThenInclude(ra => ra.Room)
-                .ThenInclude(ra => ra.HotelRoom)
-                .ThenInclude(ra => ra.Hotel)
-                .ToListAsync();
-            return amenities;
+            var amenites = await _context.Amenities.Select(A => new AmenityDTO
+            {
+                ID = A.ID,
+                Name = A.Name,
+            }).ToListAsync();
+            return amenites;
         }
 
-        public async Task<Amenity> GetAmenity(int AmenityID)
+        public async Task<AmenityDTO> GetAmenity(int id)
         {
-            Amenity amenity = await _context.Amenities.FindAsync(AmenityID);
-            return amenity;
+            var amenty = await _context.Amenities.Select(A => new AmenityDTO
+            {
+                ID = A.ID,
+                Name = A.Name,
+            }).FirstAsync(Am => Am.ID == id);
+            return amenty;
         }
 
-        public async Task<Amenity> UpdateAmenity(int ID, Amenity amenity)
+        public async Task<AmenityDTO> UpdateAmenity(int id, AmenityDTO amenityDTO)
         {
-            
+            var amenity = await _context.Amenities.FirstAsync(Am => Am.ID == id);
+            if (amenity == null) { return null; }
+            amenity.Name = amenityDTO.Name;
             _context.Entry(amenity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return amenity;
+            return amenityDTO;
         }
+
+
     }
 }

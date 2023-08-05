@@ -29,7 +29,28 @@ namespace Async__Inn
             builder.Services.AddTransient<IHotel, HotelServices>();
             builder.Services.AddTransient<IRoom, RoomServices>();
             builder.Services.AddTransient<IHotelRoom, HotelRoomRepository>();
+
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
+                {
+                    Title = "Async__Inn",
+                    Version = "v1",
+                });
+            });
+
             var app = builder.Build();
+
+            app.UseSwagger(options =>
+            {
+                options.RouteTemplate = "/api/{documentName}/swagger.json";
+            });
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/api/v1/swagger.json", "Async__Inn");
+                options.RoutePrefix = "docs";
+            });
 
             app.MapControllers();
                     

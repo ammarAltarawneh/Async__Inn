@@ -56,3 +56,23 @@ Here are some requests after applying DTOs:
 ![](./assets/3.png)
 
 ![](./assets/4.png)
+
+## Summary comments
+I added sommary comments to the service classes, which describe each method task.
+
+## Swagger 
+I added swagger to the application, so that the user can easily reach API routes and try using them in an friendly interface. 
+
+Here is how it looks like:
+![](./assets/swagger%20general.png)
+
+We can try executing one of them:
+![](./assets/HotelPutExecute.png)
+And here is the response:
+![](./assets/HotelPutResponse.png)
+
+## Unit Test
+First, I build Mock DB to deal with the test, then I build some tests to verify the app and its different tasks.
+
+Here is the Test result:
+![](./assets/test.png)

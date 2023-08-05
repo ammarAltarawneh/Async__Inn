@@ -2,117 +2,159 @@
 using Async__Inn.Models.DTO;
 using Async__Inn.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Async__Inn.Models.Services
 {
-    public class HotelRoomRepository : IHotelRoom 
-    { 
+    /// <summary>
+    /// Implementation of the IHotelRoom interface to manage hotel room-related operations.
+    /// </summary>
+    public class HotelRoomRepository : IHotelRoom
+    {
         private readonly AsyncInnDbContext _context;
 
-        public HotelRoomRepository(AsyncInnDbContext context) 
+        /// <summary>
+        /// Initializes a new instance of the HotelRoomRepository class.
+        /// </summary>
+        /// <param name="context">The database context for AsyncInn.</param>
+        public HotelRoomRepository(AsyncInnDbContext context)
         {
             _context = context;
         }
 
-        public async Task<HotelRoomDTO> Create(HotelRoomDTO hotelRoom, int HotelId)
+        /// <summary>
+        /// Creates a new hotel room.
+        /// </summary>
+        /// <param name="hotelRoom">The HotelRoomDTO object containing hotel room information.</param>
+        /// <param name="hotelId">The ID of the hotel to which the room belongs.</param>
+        /// <returns>The created HotelRoomDTO object.</returns>
+        public async Task<HotelRoomDTO> Create(HotelRoomDTO hotelRoom, int hotelId)
         {
-            var Hotel = await _context.Hotels.FindAsync(HotelId);
-            //var Room = await _context.Rooms.FindAsync(hotelRoom.RoomId);
-            if (Hotel != null)
+            var hotel = await _context.Hotels.FindAsync(hotelId);
+            if (hotel != null)
             {
-                HotelRoom HR = new HotelRoom()
+                var hotelRoomEntity = new HotelRoom()
                 {
-                    HotelID = HotelId,
+                    HotelID = hotelId,
                     RoomID = hotelRoom.RoomID,
                     RoomNumber = hotelRoom.RoomNumber,
                     Rate = hotelRoom.Rate,
                     PetFreindly = hotelRoom.PetFriendly
-
                 };
-                await _context.HotelRoom.AddAsync(HR);
+                await _context.HotelRoom.AddAsync(hotelRoomEntity);
                 await _context.SaveChangesAsync();
                 return hotelRoom;
             }
             return null;
-            //_context.Entry(hotelRoom).State = EntityState.Added;
-            //await _context.SaveChangesAsync();
-            //return hotelRoom;	
-
         }
 
+        /// <summary>
+        /// Deletes an existing hotel room.
+        /// </summary>
+        /// <param name="hotelId">The ID of the hotel to which the room belongs.</param>
+        /// <param name="roomNumber">The room number of the hotel room to delete.</param>
         public async Task Delete(int hotelId, int roomNumber)
         {
-            var hotelroom = await _context.HotelRoom
-                .FirstOrDefaultAsync(HR => HR.HotelID == hotelId && HR.RoomNumber == roomNumber);
-            //var hotelroom = await _context.HotelRooms.GetById(hotelId, roomNumber);
-            if (hotelroom != null)
+            var hotelRoom = await _context.HotelRoom
+                .FirstOrDefaultAsync(h => h.HotelID == hotelId && h.RoomNumber == roomNumber);
+
+            if (hotelRoom != null)
             {
-                _context.HotelRoom.Remove(hotelroom);
+                _context.HotelRoom.Remove(hotelRoom);
                 await _context.SaveChangesAsync();
             }
         }
 
+        /// <summary>
+        /// Gets a specific hotel room by its hotel ID and room number.
+        /// </summary>
+        /// <param name="hotelId">The ID of the hotel to which the room belongs.</param>
+        /// <param name="roomNumber">The room number of the hotel room to retrieve.</param>
+        /// <returns>The HotelRoomDTO object representing the retrieved hotel room.</returns>
         public async Task<HotelRoomDTO> GetHotelRoom(int hotelId, int roomNumber)
         {
-            var Room = await _context.HotelRoom.Select(HR => new HotelRoomDTO
-            {
-                HotelID = HR.HotelID,
-                RoomNumber = HR.RoomNumber,
-                Rate = HR.Rate,
-                PetFriendly = HR.PetFreindly,
-                RoomID = HR.RoomID,
-                Room = new RoomDTO
+            var room = await _context.HotelRoom
+                .Select(h => new HotelRoomDTO
                 {
-                    ID = HR.Room.ID,
-                    Name = HR.Room.Name,
-                    Layout = HR.Room.Layout,
-                    Amenities = HR.Room.RoomAmenities.Select(RA => new AmenityDTO
+                    HotelID = h.HotelID,
+                    RoomNumber = h.RoomNumber,
+                    Rate = h.Rate,
+                    PetFriendly = h.PetFreindly,
+                    RoomID = h.RoomID,
+                    Room = new RoomDTO
                     {
-                        ID = RA.Amenity.ID,
-                        Name = RA.Amenity.Name
-                    }).ToList()
-                }
-            })
+                        ID = h.Room.ID,
+                        Name = h.Room.Name,
+                        Layout = h.Room.Layout,
+                        Amenities = h.Room.RoomAmenities.Select(ra => new AmenityDTO
+                        {
+                            ID = ra.Amenity.ID,
+                            Name = ra.Amenity.Name
+                        }).ToList()
+                    }
+                })
+                .FirstOrDefaultAsync(h => h.HotelID == hotelId && h.RoomNumber == roomNumber);
 
-        .FirstOrDefaultAsync(HR => HR.HotelID == hotelId && HR.RoomNumber == roomNumber);
-            return Room;
+            return room;
         }
 
+        /// <summary>
+        /// Gets a list of hotel rooms belonging to a specific hotel.
+        /// </summary>
+        /// <param name="hotelId">The ID of the hotel for which to retrieve the rooms.</param>
+        /// <returns>A list of HotelRoomDTO objects representing the hotel rooms.</returns>
         public async Task<List<HotelRoomDTO>> GetHotelRooms(int hotelId)
         {
-            var Rooms = await _context.HotelRoom.Select(HR => new HotelRoomDTO
-            {
-                HotelID = HR.HotelID,
-                RoomNumber = HR.RoomNumber,
-                Rate = HR.Rate,
-                PetFriendly = HR.PetFreindly,
-                RoomID = HR.RoomID,
-                Room = new RoomDTO
+            var rooms = await _context.HotelRoom
+                .Select(h => new HotelRoomDTO
                 {
-                    ID = HR.Room.ID,
-                    Name = HR.Room.Name,
-                    Layout = HR.Room.Layout,
-                    Amenities = HR.Room.RoomAmenities.Select(RA => new AmenityDTO
+                    HotelID = h.HotelID,
+                    RoomNumber = h.RoomNumber,
+                    Rate = h.Rate,
+                    PetFriendly = h.PetFreindly,
+                    RoomID = h.RoomID,
+                    Room = new RoomDTO
                     {
-                        ID = RA.Amenity.ID,
-                        Name = RA.Amenity.Name
-                    }).ToList()
-                }
-            }).Where(HR => HR.HotelID == hotelId).ToListAsync();
-            return Rooms;
+                        ID = h.Room.ID,
+                        Name = h.Room.Name,
+                        Layout = h.Room.Layout,
+                        Amenities = h.Room.RoomAmenities.Select(ra => new AmenityDTO
+                        {
+                            ID = ra.Amenity.ID,
+                            Name = ra.Amenity.Name
+                        }).ToList()
+                    }
+                })
+                .Where(h => h.HotelID == hotelId)
+                .ToListAsync();
+
+            return rooms;
         }
 
+        /// <summary>
+        /// Updates an existing hotel room.
+        /// </summary>
+        /// <param name="hotelId">The ID of the hotel to which the room belongs.</param>
+        /// <param name="roomNumber">The room number of the hotel room to update.</param>
+        /// <param name="hotelRoom">The updated HotelRoomDTO object containing hotel room information.</param>
+        /// <returns>The updated HotelRoomDTO object.</returns>
         public async Task<HotelRoomDTO> UpdateHotelRoom(int hotelId, int roomNumber, HotelRoomDTO hotelRoom)
         {
+            var hotelRoomToUpdate = await _context.HotelRoom
+                .FirstOrDefaultAsync(h => h.HotelID == hotelId && h.RoomNumber == roomNumber);
 
-            var HotelRoomToUpdate = await _context.HotelRoom.FirstAsync(HR => HR.HotelID == hotelId && HR.RoomNumber == roomNumber);
+            if (hotelRoomToUpdate == null)
+            {
+                return null;
+            }
 
-            if (HotelRoomToUpdate == null) { return null; }
-            HotelRoomToUpdate.Rate = hotelRoom.Rate;
-            HotelRoomToUpdate.PetFreindly = hotelRoom.PetFriendly;
-            HotelRoomToUpdate.RoomID = hotelRoom.RoomID;
-            _context.Entry(HotelRoomToUpdate).State = EntityState.Modified;
+            hotelRoomToUpdate.Rate = hotelRoom.Rate;
+            hotelRoomToUpdate.PetFreindly = hotelRoom.PetFriendly;
+            hotelRoomToUpdate.RoomID = hotelRoom.RoomID;
+
+            _context.Entry(hotelRoomToUpdate).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+
             return hotelRoom;
         }
     }

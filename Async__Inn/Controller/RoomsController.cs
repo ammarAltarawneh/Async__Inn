@@ -11,7 +11,7 @@ using Async__Inn.Models.Interfaces;
 using Async__Inn.Models.DTO;
 
 namespace Async__Inn.Controller  
-{
+{ 
     [Route("api/[controller]")]
     [ApiController]
     public class RoomsController : ControllerBase
@@ -88,14 +88,19 @@ namespace Async__Inn.Controller
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRoom(int id)
         {
+            if (_Room == null)
+            {
+                return NotFound();
+            }
             await _Room.Delete(id);
 
             return NoContent();
         }
 
-        [Route("{roomId}/Amenity/{amenityId}")]
+        
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("{roomId}/Amenity/{amenityId}")]
         public async Task<IActionResult> RemoveAmenityFromRoom(int roomId, int amenityId)
         {
             await _Room.RemoveAmenityFromRoom(roomId, amenityId);

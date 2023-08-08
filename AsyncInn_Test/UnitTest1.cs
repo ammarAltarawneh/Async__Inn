@@ -24,7 +24,7 @@ namespace AsyncInn_Test
         
 
         [Fact]
-        public async Task Can_get_room()
+        public async Task Can_get_room() 
         {
             // Arrange
             var room = await CreateAndSaveTestRoom();

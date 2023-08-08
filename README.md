@@ -57,6 +57,21 @@ Here are some requests after applying DTOs:
 
 ![](./assets/4.png)
 
+## Identity
+Identity refers to a system that manages and represents user authentication and authorization. It is a core component of building secure web applications and managing user access to various resources within the application. 
+
+You can send a body for registration as the DTO of the registration and will receive the DTO of the user.
+
+And here is the Register / Login workout:
+
+**[Register]**
+![](./assets/RegisterPost.png)
+![](./assets/RegisterResponse.png)
+
+**[Login]**
+![](./assets/LoginPost.png)
+![](./assets/LoginResponse.png)
+
 ## Summary comments
 I added sommary comments to the service classes, which describe each method task.
 

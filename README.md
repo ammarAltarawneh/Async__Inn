@@ -72,6 +72,23 @@ And here is the Register / Login workout:
 ![](./assets/LoginPost.png)
 ![](./assets/LoginResponse.png)
 
+## Roles, Claims and JWT Tokens
+4 Roles are added to the app, each with specific abilities:
+
+1- District Manager: They can do everything (create, read, update, delete) with Hotels, HotelRooms, Rooms, and Amenities. They can also make accounts for other roles.
+
+2- Property Manager: They can add, update, and read HotelRooms in hotels, and add or remove amenities from rooms. They can't create new rooms or hotels, and they can only make accounts for Agents.
+
+3- Agent: Agents can only update or read HotelRooms and can add or remove amenities from rooms.
+
+4- Anonymous Users: They can only view the information available through GET routes.
+
+Here is the different users Roles in DB:
+![](./assets/Roles.png)
+
+And here is route action in postman using the Tokens:
+![](./assets/Token.png)
+
 ## Summary comments
 I added sommary comments to the service classes, which describe each method task.
 

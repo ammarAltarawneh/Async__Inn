@@ -1,5 +1,6 @@
 ﻿using Async__Inn.Models.DTO;
 using Async__Inn.Models.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,5 +41,14 @@ namespace Async__Inn.Controller
             }
             return user;
         }
+
+        [AllowAnonymous]
+        [HttpGet("Profile")]
+        public async Task<ActionResult<UserDto>> Profile()
+        {
+
+            return await userService.GetUser(this.User);
+        }
+
     }
 }

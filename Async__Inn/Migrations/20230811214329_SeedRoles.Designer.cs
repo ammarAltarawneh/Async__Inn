@@ -4,6 +4,7 @@ using Async__Inn.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Async__Inn.Migrations
 {
     [DbContext(typeof(AsyncInnDbContext))]
-    partial class AsyncInnDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230811214329_SeedRoles")]
+    partial class SeedRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -303,31 +306,17 @@ namespace Async__Inn.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "district manager",
+                            Id = "admin",
                             ConcurrencyStamp = "00000000-0000-0000-0000-000000000000",
-                            Name = "District Manager",
-                            NormalizedName = "DISTRICT MANAGER"
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "property manager",
+                            Id = "user",
                             ConcurrencyStamp = "00000000-0000-0000-0000-000000000000",
-                            Name = "Property Manager",
-                            NormalizedName = "PROPERTY MANAGER"
-                        },
-                        new
-                        {
-                            Id = "agent",
-                            ConcurrencyStamp = "00000000-0000-0000-0000-000000000000",
-                            Name = "Agent",
-                            NormalizedName = "AGENT"
-                        },
-                        new
-                        {
-                            Id = "anonymous",
-                            ConcurrencyStamp = "00000000-0000-0000-0000-000000000000",
-                            Name = "Anonymous",
-                            NormalizedName = "ANONYMOUS"
+                            Name = "User",
+                            NormalizedName = "USER"
                         });
                 });
 
@@ -358,227 +347,38 @@ namespace Async__Inn.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 33,
+                            Id = 6,
                             ClaimType = "permissions",
-                            ClaimValue = "hotel.create",
-                            RoleId = "district manager"
+                            ClaimValue = "create",
+                            RoleId = "admin"
                         },
                         new
                         {
-                            Id = 34,
+                            Id = 7,
                             ClaimType = "permissions",
-                            ClaimValue = "hotel.read",
-                            RoleId = "district manager"
+                            ClaimValue = "update",
+                            RoleId = "admin"
                         },
                         new
                         {
-                            Id = 35,
+                            Id = 8,
                             ClaimType = "permissions",
-                            ClaimValue = "hotel.update",
-                            RoleId = "district manager"
+                            ClaimValue = "delete",
+                            RoleId = "admin"
                         },
                         new
                         {
-                            Id = 36,
+                            Id = 9,
                             ClaimType = "permissions",
-                            ClaimValue = "hotel.delete",
-                            RoleId = "district manager"
+                            ClaimValue = "create",
+                            RoleId = "user"
                         },
                         new
                         {
-                            Id = 37,
+                            Id = 10,
                             ClaimType = "permissions",
-                            ClaimValue = "hotelroom.create",
-                            RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 38,
-                            ClaimType = "permissions",
-                            ClaimValue = "hotelroom.read",
-                            RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 39,
-                            ClaimType = "permissions",
-                            ClaimValue = "hotelroom.update",
-                            RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 40,
-                            ClaimType = "permissions",
-                            ClaimValue = "hotelroom.delete",
-                            RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 41,
-                            ClaimType = "permissions",
-                            ClaimValue = "room.create",
-                            RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 42,
-                            ClaimType = "permissions",
-                            ClaimValue = "room.read",
-                            RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 43,
-                            ClaimType = "permissions",
-                            ClaimValue = "room.update",
-                            RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 44,
-                            ClaimType = "permissions",
-                            ClaimValue = "room.delete",
-                            RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 45,
-                            ClaimType = "permissions",
-                            ClaimValue = "amenity.create",
-                            RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 46,
-                            ClaimType = "permissions",
-                            ClaimValue = "amenity.read",
-                            RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 47,
-                            ClaimType = "permissions",
-                            ClaimValue = "amenity.update",
-                            RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 48,
-                            ClaimType = "permissions",
-                            ClaimValue = "amenity.delete",
-                            RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 49,
-                            ClaimType = "permissions",
-                            ClaimValue = "role.create",
-                            RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 50,
-                            ClaimType = "permissions",
-                            ClaimValue = "hotelroom.create",
-                            RoleId = "property manager"
-                        },
-                        new
-                        {
-                            Id = 51,
-                            ClaimType = "permissions",
-                            ClaimValue = "hotelroom.read",
-                            RoleId = "property manager"
-                        },
-                        new
-                        {
-                            Id = 52,
-                            ClaimType = "permissions",
-                            ClaimValue = "hotelroom.update",
-                            RoleId = "property manager"
-                        },
-                        new
-                        {
-                            Id = 53,
-                            ClaimType = "permissions",
-                            ClaimValue = "amenity.create",
-                            RoleId = "property manager"
-                        },
-                        new
-                        {
-                            Id = 54,
-                            ClaimType = "permissions",
-                            ClaimValue = "amenity.read",
-                            RoleId = "property manager"
-                        },
-                        new
-                        {
-                            Id = 55,
-                            ClaimType = "permissions",
-                            ClaimValue = "amenity.update",
-                            RoleId = "property manager"
-                        },
-                        new
-                        {
-                            Id = 56,
-                            ClaimType = "permissions",
-                            ClaimValue = "role.create.agent",
-                            RoleId = "property manager"
-                        },
-                        new
-                        {
-                            Id = 57,
-                            ClaimType = "permissions",
-                            ClaimValue = "hotelroom.read",
-                            RoleId = "agent"
-                        },
-                        new
-                        {
-                            Id = 58,
-                            ClaimType = "permissions",
-                            ClaimValue = "hotelroom.update",
-                            RoleId = "agent"
-                        },
-                        new
-                        {
-                            Id = 59,
-                            ClaimType = "permissions",
-                            ClaimValue = "amenity.create",
-                            RoleId = "agent"
-                        },
-                        new
-                        {
-                            Id = 60,
-                            ClaimType = "permissions",
-                            ClaimValue = "amenity.delete",
-                            RoleId = "agent"
-                        },
-                        new
-                        {
-                            Id = 61,
-                            ClaimType = "permissions",
-                            ClaimValue = "hotel.read",
-                            RoleId = "anonymous"
-                        },
-                        new
-                        {
-                            Id = 62,
-                            ClaimType = "permissions",
-                            ClaimValue = "hotelroom.read",
-                            RoleId = "anonymous"
-                        },
-                        new
-                        {
-                            Id = 63,
-                            ClaimType = "permissions",
-                            ClaimValue = "room.read",
-                            RoleId = "anonymous"
-                        },
-                        new
-                        {
-                            Id = 64,
-                            ClaimType = "permissions",
-                            ClaimValue = "amenity.read",
-                            RoleId = "anonymous"
+                            ClaimValue = "update",
+                            RoleId = "user"
                         });
                 });
 
